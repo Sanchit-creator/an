@@ -9,5 +9,6 @@ router.post('/verify', userController.verify)
 router.post('/signin', userController.signIn)
 router.get('/download/:id', userController.getExcel)
 router.get('/pdf/:id', userController.getPdf)
+router.get('/get/:id', protect, userController.getProfile)
 
 module.exports = router;

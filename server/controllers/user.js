@@ -20,7 +20,8 @@ module.exports.signup = async(req, res) => {
             password: req.body.password,
             otp,
         })
-        
+        console.log(req.file);
+        console.log(req.files);
 
         if (req.file) {
             user.profilePicture =  req.file.path;
@@ -43,12 +44,15 @@ module.exports.signup = async(req, res) => {
 module.exports.verify = async(req, res) => {
     try {
         const { email, otp } = req.body;
-    
+        console.log(email);
+        console.log(otp);
         const user = await User.findOne({ email, otp });
     
         if (!user) {
           return res.status(400).json({ error: 'Invalid OTP.' });
         }
+
+        console.log(user);
     
         user.isVerified = true;
         await user.save();
@@ -68,7 +72,6 @@ module.exports.signIn = async (req, res) => {
                 if (user.isVerified === true) {
                     return res.status(200).json({
                         id: user._id,
-                        user: 'user',
                         token: generateToken(user._id)
                     })
                 }else{
@@ -138,6 +141,17 @@ module.exports.getPdf = async(req, res) => {
       } catch (error) {
         res.status(500).json({ error: 'An error occurred during profile download.' });
       }
+}
+
+
+module.exports.getProfile = async(req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred during profile download.' });
+    }
 }
 
 

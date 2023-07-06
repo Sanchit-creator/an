@@ -6,7 +6,7 @@ const router = require('./api');
 const cors = require('cors');
 require('dotenv').config()
 
-
+app.use('/uploads', express.static('uploads'))
 app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
